@@ -4,7 +4,26 @@ import Tempreture from './temperature.png';
 import Wind from './windy.png';
 import Humidity from './humidity.png';
 
-const Weather = ({ data }) => {
+type WeatherData = {
+  name: string;
+  sys: {
+    country: string;
+  };
+  weather: {
+    icon: string;
+    main: string;
+  }[];
+  main: {
+    temp: number;
+    feels_like: number;
+    humidity: number;
+  };
+  wind: {
+    speed: number;
+  };
+};
+
+const Weather = ({data}: {data: WeatherData}) => {
   return (
     <div className="relative max-w-7xl mx-auto h-[90vh] p-6 text-gray-300 z-10 bg-black/30 rounded-lg">
       {/* City and Country */}
