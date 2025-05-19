@@ -16,18 +16,20 @@ export default function Home() {
   
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}`;
 
-  const fetchWeather = (e) => {
-    e.preventDefault()
-    setLoading(true)
-    axios.get(url).then((response) => {
-      setWeather(response.data);
-      //console.log(response.data)
-    });
-    setCity('')
-    setLoading(false)
-  
-  };
-  
+  const fetchWeather = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setLoading(true);
+  try {
+    const response = await axios.get(url);
+    setWeather(response.data);
+  } catch (error) {
+    console.error("Error fetching weather:", error);
+  } finally {
+    setCity('');
+    setLoading(false);
+  }
+};
+
   if(loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-black/80">
@@ -57,7 +59,7 @@ export default function Home() {
           <div>
             <input
               onChange={(e) => setCity(e.target.value)}
-              className="bg-transparent border-none text-white focus:outline-none text- 4xl placeholder:text-gray-400"
+              className="bg-transparent border-none text-white focus:outline-none text-2xl placeholder:text-gray-400"
               type="text"
               placeholder="Search City"
             />
@@ -77,7 +79,7 @@ export default function Home() {
           </button>
           <button
           onClick={() => setUnit("imperial")}
-          className={`flex items-center justify-center px-4 py-3 
+          className={`flex items-center justify-center px-4 py-3
             ${unit === "imperial"? "bg-white/30 text-gray-500 text-xl font-bold": "bg-transparent text-white text-xl font-bold hover:bg-white/30"}`
         }
         >
