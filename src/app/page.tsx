@@ -7,11 +7,28 @@ import {useState} from "react";
 import { BsSearch } from "react-icons/bs"; 
 import Weather from "@/app/components/Weather";
 
+type WeatherData = {
+  main?: {
+    temp: number;
+    feels_like: number;
+    temp_min: number;
+    temp_max: number;
+    pressure: number;
+    humidity: number;
+  };
+  weather?: {
+    main: string;
+    description: string;
+    icon: string;
+  }[];
+};
+
+
 export default function Home() {
 
   const [city, setCity]=useState('');
   const [unit, setUnit] = useState("metric"); // "metric" = °C, "imperial" = °F
-  const [weather, setWeather]=useState({});
+  const [weather, setWeather]=useState<WeatherData>({});
   const [loading, setLoading]=useState(false);
   
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}`;
