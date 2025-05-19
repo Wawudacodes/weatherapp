@@ -8,7 +8,17 @@ import { BsSearch } from "react-icons/bs";
 import Weather from "@/app/components/Weather";
 
 type WeatherData = {
-  main?: {
+  name: string;
+  sys: {
+    country: string;
+    sunrise: number;
+    sunset: number;
+  };
+  wind: {
+    speed: number;
+    deg: number;
+  };
+  main: {
     temp: number;
     feels_like: number;
     temp_min: number;
@@ -16,7 +26,7 @@ type WeatherData = {
     pressure: number;
     humidity: number;
   };
-  weather?: {
+  weather: {
     main: string;
     description: string;
     icon: string;
@@ -28,7 +38,7 @@ export default function Home() {
 
   const [city, setCity]=useState('');
   const [unit, setUnit] = useState("metric"); // "metric" = °C, "imperial" = °F
-  const [weather, setWeather]=useState<WeatherData>({});
+  const [weather, setWeather]=useState<WeatherData | null>(null);
   const [loading, setLoading]=useState(false);
   
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}`;
@@ -111,7 +121,7 @@ export default function Home() {
       {/* Weathert Display */}
       <div className="mt-6">
 
-        {weather.main && <Weather data={weather} />}
+        {weather && <Weather data={weather} />}
 
       </div>
       
